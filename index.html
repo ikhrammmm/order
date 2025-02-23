@@ -16,7 +16,7 @@
             max-width: 400px;
             margin: auto;
             background: #fff;
-            padding: 50px;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -84,31 +84,7 @@
                         <img src="food1-2.png" alt="Food 1-2">
                     </div>
                 </div>
-                <span>Sambal Merah Moist</span>
-                <select class="quantity">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
-            </div>
-
-            <div class="food-item">
-                <div class="slider-container">
-                    <div class="slider">
-                        <img src="food1.png" alt="Food 1">
-                        <img src="food1-1.png" alt="Food 1-1">
-                        <img src="food1-2.png" alt="Food 1-2">
-                    </div>
-                </div>
-                <span>Sambal Hijo Kantan</span>
+                <span>Food Selection</span>
                 <select class="quantity">
                     <option value="0">0</option>
                     <option value="1">1</option>
@@ -169,13 +145,32 @@
                     orderDetails += `\nFood ${index + 1}: ${qty.value}`;
                 }
             });
-            
+
             if (paymentProof) {
-                alert("Payment proof uploaded. Please send it manually via WhatsApp.");
+                let formData = new FormData();
+                formData.append("paymentProof", paymentProof);
+
+                fetch("upload.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        let fileUrl = window.location.origin + "/" + data.fileUrl;
+                        let whatsappUrl = `https://wa.me/01136631534?text=${encodeURIComponent(orderDetails + "\nPayment Proof: " + fileUrl)}`;
+                        window.open(whatsappUrl, '_blank');
+                    } else {
+                        alert("File upload failed: " + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error uploading file:", error);
+                    alert("Error uploading file. Please try again.");
+                });
+            } else {
+                alert("Please upload a payment proof.");
             }
-            
-            let whatsappUrl = `https://wa.me/01136631534?text=${encodeURIComponent(orderDetails)}`;
-            window.open(whatsappUrl, '_blank');
         });
     </script>
 </body>
