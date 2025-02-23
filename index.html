@@ -16,7 +16,7 @@
             max-width: 400px;
             margin: auto;
             background: #fff;
-            padding: 60px;
+            padding: 50px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -44,7 +44,6 @@
         }
         .slider {
             display: flex;
-            width: 300%;
             transition: transform 0.5s ease-in-out;
         }
         .slider img {
@@ -62,6 +61,11 @@
             padding: 10px;
             border-bottom: 1px solid #ddd;
         }
+        .qr-container img {
+            width: 150px;
+            height: 150px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -77,7 +81,7 @@
                     <div class="slider">
                         <img src="food1.png" alt="Food 1">
                         <img src="food1-1.png" alt="Food 1-1">
-                        <img src="food1.png" alt="Food 1">
+                        <img src="food1-2.png" alt="Food 1-2">
                     </div>
                 </div>
                 <span>Food Selection</span>
@@ -101,7 +105,7 @@
                     <div class="slider">
                         <img src="food1.png" alt="Food 1">
                         <img src="food1-1.png" alt="Food 1-1">
-                        <img src="food1.png" alt="Food 1">
+                        <img src="food1-2.png" alt="Food 1-2">
                     </div>
                 </div>
                 <span>Food Selection 2</span>
@@ -120,19 +124,35 @@
                 </select>
             </div>
             
+            <div class="qr-container">
+                <h3>Scan QR to Pay</h3>
+                <img src="qr.jpg" alt="QR Code">
+            </div>
+            
+            <div class="upload-container">
+                <h3>Upload Payment Proof</h3>
+                <input type="file" id="paymentProof" accept="image/*,.pdf" required>
+            </div>
+            
             <button type="submit">Submit Order</button>
         </form>
     </div>
 
     <script>
-        let currentIndex = 0;
-        function showSlide() {
-            const slider = document.querySelector('.slider');
-            const totalSlides = slider.children.length;
-            currentIndex = (currentIndex + 1) % totalSlides;
-            slider.style.transform = `translateX(-${currentIndex * 100}px)`;
+        function startSlider(sliderContainer) {
+            let slider = sliderContainer.querySelector('.slider');
+            let images = slider.querySelectorAll('img');
+            let index = 0;
+            
+            function showNextImage() {
+                index = (index + 1) % images.length;
+                slider.style.transform = `translateX(-${index * 100}px)`;
+            }
+            
+            setInterval(showNextImage, 3000);
         }
-        setInterval(showSlide, 3000);
+        
+        document.querySelectorAll('.slider-container').forEach(startSlider);
 
         document.getElementById('orderForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -141,6 +161,7 @@
             let phone = document.getElementById('phone').value;
             let address = document.getElementById('address').value;
             let quantities = document.querySelectorAll('.quantity');
+            let paymentProof = document.getElementById('paymentProof').files[0];
             
             let orderDetails = `Nama: ${name}\nNo Telefon: ${phone}\nAlamat: ${address}\nOrder:`;
             quantities.forEach((qty, index) => {
@@ -148,6 +169,10 @@
                     orderDetails += `\nFood ${index + 1}: ${qty.value}`;
                 }
             });
+            
+            if (paymentProof) {
+                alert("Payment proof uploaded. Please send it manually via WhatsApp.");
+            }
             
             let whatsappUrl = `https://wa.me/01136631534?text=${encodeURIComponent(orderDetails)}`;
             window.open(whatsappUrl, '_blank');
