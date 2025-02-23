@@ -35,7 +35,8 @@
         }
         .slider-container {
             position: relative;
-            width: 100%;
+            width: 100px;
+            height: 100px;
             overflow: hidden;
             display: flex;
             justify-content: center;
@@ -43,8 +44,8 @@
         }
         .slider {
             display: flex;
-            transition: transform 0.3s ease-in-out;
-            width: 200%;
+            width: 300%;
+            transition: transform 0.5s ease-in-out;
         }
         .slider img {
             width: 100px;
@@ -75,9 +76,8 @@
                 <div class="slider-container">
                     <div class="slider">
                         <img src="food1.png" alt="Food 1">
-                    </div>
-                    <div class="slider">
                         <img src="food1-1.png" alt="Food 1-1">
+                        <img src="food1.png" alt="Food 1-2">
                     </div>
                 </div>
                 <span>Food Selection</span>
@@ -106,7 +106,7 @@
             const slider = document.querySelector('.slider');
             const totalSlides = slider.children.length;
             currentIndex = (currentIndex + 1) % totalSlides;
-            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+            slider.style.transform = `translateX(-${currentIndex * 100}px)`;
         }
         setInterval(showSlide, 3000);
 
