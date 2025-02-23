@@ -16,7 +16,7 @@
             max-width: 400px;
             margin: auto;
             background: #fff;
-            padding: 80px;
+            padding: 50px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -55,18 +55,6 @@
             padding: 10px;
             border-bottom: 1px solid #ddd;
         }
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-        }
-        .prev { left: 10px; }
-        .next { right: 10px; }
     </style>
 </head>
 <body>
@@ -79,12 +67,10 @@
             
             <div class="food-item">
                 <div class="slider-container">
-                    <button class="slider-btn prev" onclick="prevSlide(event)">&#10094;</button>
                     <div class="slider">
                         <img src="food1.png" alt="Food 1">
                         <img src="food1-1.png" alt="Food 1-1">
                     </div>
-                    <button class="slider-btn next" onclick="nextSlide(event)">&#10095;</button>
                 </div>
                 <span>Food Selection</span>
                 <select class="quantity">
@@ -108,22 +94,13 @@
 
     <script>
         let currentIndex = 0;
-        function showSlide(index) {
+        function showSlide() {
             const slider = document.querySelector('.slider');
             const totalSlides = slider.children.length;
-            if (index >= totalSlides) currentIndex = 0;
-            else if (index < 0) currentIndex = totalSlides - 1;
-            else currentIndex = index;
+            currentIndex = (currentIndex + 1) % totalSlides;
             slider.style.transform = `translateX(-${currentIndex * 100}%)`;
         }
-        function nextSlide(event) {
-            event.preventDefault();
-            showSlide(currentIndex + 1);
-        }
-        function prevSlide(event) {
-            event.preventDefault();
-            showSlide(currentIndex - 1);
-        }
+        setInterval(showSlide, 3000);
 
         document.getElementById('orderForm').addEventListener('submit', function(event) {
             event.preventDefault();
