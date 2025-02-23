@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f4ff;
+            color: #4b0082;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, select, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #daa520;
+            color: white;
+            font-size: 16px;
+            border: none;
+        }
+        .food-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .food-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Order Form</h2>
+        <form id="orderForm">
+            <input type="text" id="name" placeholder="Nama" required>
+            <input type="tel" id="phone" placeholder="No Telefon" required>
+            <input type="text" id="address" placeholder="Alamat" required>
+            
+            <div class="food-item">
+                <img src="https://via.placeholder.com/50" alt="Food">
+                <span>Food 1</span>
+                <select class="quantity">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+            
+            <button type="submit">Submit Order</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let name = document.getElementById('name').value;
+            let phone = document.getElementById('phone').value;
+            let address = document.getElementById('address').value;
+            let quantities = document.querySelectorAll('.quantity');
+            
+            let orderDetails = `Nama: ${name}\nNo Telefon: ${phone}\nAlamat: ${address}\nOrder:`;
+            quantities.forEach((qty, index) => {
+                if (qty.value > 0) {
+                    orderDetails += `\nFood ${index + 1}: ${qty.value}`;
+                }
+            });
+            
+            let whatsappUrl = `https://wa.me/01136631534?text=${encodeURIComponent(orderDetails)}`;
+            window.open(whatsappUrl, '_blank');
+        });
+    </script>
+</body>
+</html>
